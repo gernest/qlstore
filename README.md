@@ -1,5 +1,7 @@
 # qlstore
 
+[![GoDoc](https://godoc.org/github.com/gernest/qlstore?status.svg)](https://godoc.org/github.com/gernest/qlstore) [![Build Status](https://travis-ci.org/gernest/qlstore.svg?branch=master)](https://travis-ci.org/gernest/qlstore) [![Coverage Status](https://coveralls.io/repos/github/gernest/qlstore/badge.svg?branch=master)](https://coveralls.io/github/gernest/qlstore?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/gernest/qlstore)](https://goreportcard.com/report/github.com/gernest/qlstore)
+
 Implements [gorilla/sessions](https://github.com/gorilla/sessions) store using embedded sql database ( [ql](https://github.com/cznic/ql))
 
 # installation
