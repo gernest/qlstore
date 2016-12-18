@@ -33,7 +33,7 @@ var keyPair = [][]byte{
 	[]byte("N8SmpJ00aSpepNrKoyYxmAJhwVuKEWZD"),
 }
 
-func TestPGStore(t *testing.T) {
+func TestQLStore(t *testing.T) {
 	store, err := sql.Open("ql-mem", "testing.db")
 	if err != nil {
 		t.Fatal(err)
