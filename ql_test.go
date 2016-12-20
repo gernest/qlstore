@@ -77,7 +77,7 @@ func TestQLStore(t *testing.T) {
 		t.Fatal("failed to create round 2 request", err)
 	}
 
-	encoded, err := securecookie.EncodeMulti(session.Name(), session.ID, ss.codecs...)
+	encoded, err := securecookie.EncodeMulti(session.Name(), session.ID, ss.Codecs...)
 	if err != nil {
 		t.Fatal("Failed to make cookie value", err)
 	}
@@ -146,7 +146,7 @@ func TestSessionOptionsAreUniquePerSession(t *testing.T) {
 		t.Fatal("This test requires a real database")
 	}
 
-	ss.options.MaxAge = 900
+	ss.Options.MaxAge = 900
 
 	req, err := http.NewRequest("GET", "http://www.example.com", nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func TestSessionOptionsAreUniquePerSession(t *testing.T) {
 
 	session.Options.MaxAge = -1
 
-	if ss.options.MaxAge != 900 {
-		t.Fatalf("QLStore.Options.MaxAge: expected %d, got %d", 900, ss.options.MaxAge)
+	if ss.Options.MaxAge != 900 {
+		t.Fatalf("QLStore.Options.MaxAge: expected %d, got %d", 900, ss.Options.MaxAge)
 	}
 }

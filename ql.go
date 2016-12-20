@@ -26,16 +26,16 @@ COMMIT;
 // embedded SQL database(ql).
 type QLStore struct {
 	store   *sql.DB
-	codecs  []securecookie.Codec
-	options *sessions.Options
+	Codecs  []securecookie.Codec
+	Options *sessions.Options
 }
 
 // NewQLStore initillizes QLStore with the given keyPairs
 func NewQLStore(store *sql.DB, path string, maxAge int, keyPairs ...[]byte) *QLStore {
 	return &QLStore{
 		store:  store,
-		codecs: securecookie.CodecsFromPairs(keyPairs...),
-		options: &sessions.Options{
+		Codecs: securecookie.CodecsFromPairs(keyPairs...),
+		Options: &sessions.Options{
 			Path:   path,
 			MaxAge: maxAge,
 		},
@@ -50,13 +50,13 @@ func (db *QLStore) Get(r *http.Request, name string) (*sessions.Session, error) 
 // New returns a new session
 func (db *QLStore) New(r *http.Request, name string) (*sessions.Session, error) {
 	session := sessions.NewSession(db, name)
-	opts := *db.options
+	opts := *db.Options
 	session.Options = &(opts)
 	session.IsNew = true
 
 	var err error
 	if c, errCookie := r.Cookie(name); errCookie == nil {
-		err = securecookie.DecodeMulti(name, c.Value, &session.ID, db.codecs...)
+		err = securecookie.DecodeMulti(name, c.Value, &session.ID, db.Codecs...)
 		if err == nil {
 			err = db.load(session)
 			if err == nil {
@@ -90,7 +90,7 @@ func (db *QLStore) Save(r *http.Request, w http.ResponseWriter, session *session
 	}
 
 	// Keep the session ID key in a cookie so it can be looked up in DB later.
-	encoded, err := securecookie.EncodeMulti(session.Name(), session.ID, db.codecs...)
+	encoded, err := securecookie.EncodeMulti(session.Name(), session.ID, db.Codecs...)
 	if err != nil {
 		return err
 	}
@@ -107,12 +107,12 @@ func (db *QLStore) load(session *sessions.Session) error {
 		return err
 	}
 	return securecookie.DecodeMulti(session.Name(), string(s.Data),
-		&session.Values, db.codecs...)
+		&session.Values, db.Codecs...)
 }
 
 func (db *QLStore) save(session *sessions.Session) error {
 	encoded, err := securecookie.EncodeMulti(session.Name(), session.Values,
-		db.codecs...)
+		db.Codecs...)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func (db *QLStore) save(session *sessions.Session) error {
 }
 
 func (db *QLStore) destroy(r *http.Request, w http.ResponseWriter, session *sessions.Session) error {
-	options := *db.options
+	options := *db.Options
 	options.MaxAge = -1
 	http.SetCookie(w, sessions.NewCookie(session.Name(), "", &options))
 	for k := range session.Values {
