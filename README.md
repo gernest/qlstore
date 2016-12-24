@@ -23,7 +23,6 @@ import (
 	_ "github.com/cznic/ql/driver"
 )
 
-var secret = "EyaC2BPcJtNqU3tjEHy+c+Wmqc1yihYIbUWEl/jk0Ga73kWBclmuSFd9HuJKwJw/Wdsh1XnjY2Bw1HBVph6WOw=="
 var keyPair = [][]byte{
 	[]byte("ePAPW9vJv7gHoftvQTyNj5VkWB52mlza"),
 	[]byte("N8SmpJ00aSpepNrKoyYxmAJhwVuKEWZD"),
