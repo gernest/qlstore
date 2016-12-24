@@ -153,13 +153,13 @@ func (db *QLStore) Delete(r *http.Request, w http.ResponseWriter, session *sessi
 	return db.destroy(r, w, session)
 }
 
-//Session stores http session information.
+//qlSession stores http session information.
 type qlSession struct {
 	Key       string
 	Data      []byte
 	CreatedOn time.Time
 	UpdatedOn time.Time
-	ExpiresOn time.Time `store:"expires_on"`
+	ExpiresOn time.Time
 }
 
 func (s *qlSession) Create(db *sql.DB) error {
