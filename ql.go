@@ -42,6 +42,20 @@ func NewQLStore(store *sql.DB, path string, maxAge int, keyPairs ...[]byte) *QLS
 	}
 }
 
+// MaxAge sets the maximum age for the store and the underlying cookie
+// implementation. Individual sessions can be deleted by setting Options.MaxAge
+// = -1 for that session.
+func (db *QLStore) MaxAge(age int) {
+	db.Options.MaxAge = age
+
+	// Set the maxAge for each securecookie instance.
+	for _, codec := range db.Codecs {
+		if sc, ok := codec.(*securecookie.SecureCookie); ok {
+			sc.MaxAge(age)
+		}
+	}
+}
+
 // Get fetches a session for a given name after it has been added to the registry.
 func (db *QLStore) Get(r *http.Request, name string) (*sessions.Session, error) {
 	return sessions.GetRegistry(r).Get(db, name)
@@ -64,6 +78,7 @@ func (db *QLStore) New(r *http.Request, name string) (*sessions.Session, error) 
 			}
 		}
 	}
+	db.MaxAge(db.Options.MaxAge)
 	return session, err
 }
 
